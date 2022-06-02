@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
@@ -23,6 +24,9 @@ class QuestionModelTests(TestCase):
         was_published_recently() returns False for questions whose pub_date
         is in the future.
         """
+        user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
         time = timezone.now() + datetime.timedelta(days=30)
-        future_question = Question(pub_date=time)
+        future_question = Question(pub_date=time, published_by=user)
+        future_question.save()
         self.assertIs(future_question.was_published_recently(), False)
+        self.assertEqual(future_question.published_by, user)
