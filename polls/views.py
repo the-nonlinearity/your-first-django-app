@@ -1,3 +1,6 @@
-from django.shortcuts import render
+from django.http import HttpResponse
 
-# Create your views here.
+
+def index(request):
+    response_text = "Hello, world. You're at the polls index."
+    return HttpResponse(response_text)
